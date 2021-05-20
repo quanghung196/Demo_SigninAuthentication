@@ -20,7 +20,7 @@ import com.facebook.login.LoginResult
 class SigninFragment : BaseFragment<FragmentSigninBinding, SigninFragmentViewModel>() {
 
     private lateinit var mCallbackManager: CallbackManager
-
+    private var loginType: Int? = null
 
     override fun getLayoutId(): Int = R.layout.fragment_signin
 
@@ -33,20 +33,24 @@ class SigninFragment : BaseFragment<FragmentSigninBinding, SigninFragmentViewMod
 
         mCallbackManager = CallbackManager.Factory.create()
 
-        if (viewModel.isLoggedIn()) {
+        if (viewModel.isFacebookLoggedIn()) {
             Log.d("LoggedIn? :", "YES")
-            goToHomeScreen()
+            goToHomeScreen(loginType!!)
         } else {
             Log.d("LoggedIn? :", "NO")
             // Show the Home Activity
         }
 
+        facebookCallback()
+    }
+
+    private fun facebookCallback() {
         // Callback registration
         LoginManager.getInstance()
             .registerCallback(mCallbackManager, object : FacebookCallback<LoginResult?> {
                 override fun onSuccess(loginResult: LoginResult?) {
                     Log.d("TAG", "Success Login")
-                    goToHomeScreen()
+                    goToHomeScreen(loginType!!)
                 }
 
                 override fun onCancel() {
@@ -59,8 +63,8 @@ class SigninFragment : BaseFragment<FragmentSigninBinding, SigninFragmentViewMod
             })
     }
 
-    private fun goToHomeScreen() {
-        val action = SigninFragmentDirections.actionSigninFragmentToHomeFragment()
+    private fun goToHomeScreen(loginType: Int) {
+        val action = SigninFragmentDirections.actionSigninFragmentToHomeFragment(loginType)
         view?.let { Navigation.findNavController(it).navigate(action) }
     }
 
@@ -70,8 +74,16 @@ class SigninFragment : BaseFragment<FragmentSigninBinding, SigninFragmentViewMod
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(FacebookSdk.isFacebookRequestCode(requestCode)){
+        if (FacebookSdk.isFacebookRequestCode(requestCode)) {
+            loginType = TYPE_FACEBOOK
             mCallbackManager.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    companion object {
+        const val TYPE_NORMAL: Int = 1
+        const val TYPE_FACEBOOK: Int = 2
+        const val TYPE_GOOGLE: Int = 3
+        const val TYPE_LINKEDIN: Int = 4
     }
 }

@@ -18,5 +18,9 @@
         android:id="@+id/homeFragment"
         android:name="com.example.demo_signinauthentication.view.fragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="login_type"
+            app:argType="integer" />
+    </fragment>
 </navigation>

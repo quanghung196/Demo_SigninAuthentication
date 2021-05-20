@@ -9,7 +9,7 @@ import com.facebook.login.LoginManager
 
 class SigninFragmentViewModel : ViewModel() {
 
-    fun isLoggedIn(): Boolean {
+    fun isFacebookLoggedIn(): Boolean {
         val accessToken = AccessToken.getCurrentAccessToken()
         val isLoggedIn = accessToken != null && !accessToken.isExpired
         return isLoggedIn
