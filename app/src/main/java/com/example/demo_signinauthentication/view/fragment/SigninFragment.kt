@@ -20,7 +20,7 @@ import com.facebook.login.LoginResult
 class SigninFragment : BaseFragment<FragmentSigninBinding, SigninFragmentViewModel>() {
 
     private lateinit var mCallbackManager: CallbackManager
-    private var loginType: Int? = null
+    private var loginType: Int = 0
 
     override fun getLayoutId(): Int = R.layout.fragment_signin
 
@@ -33,13 +33,8 @@ class SigninFragment : BaseFragment<FragmentSigninBinding, SigninFragmentViewMod
 
         mCallbackManager = CallbackManager.Factory.create()
 
-        if (viewModel.isFacebookLoggedIn()) {
-            Log.d("LoggedIn? :", "YES")
-            goToHomeScreen(loginType!!)
-        } else {
-            Log.d("LoggedIn? :", "NO")
-            // Show the Home Activity
-        }
+        loginType = viewModel.getLoginType()
+        goToHomeScreen(loginType)
 
         facebookCallback()
     }
@@ -64,8 +59,10 @@ class SigninFragment : BaseFragment<FragmentSigninBinding, SigninFragmentViewMod
     }
 
     private fun goToHomeScreen(loginType: Int) {
-        val action = SigninFragmentDirections.actionSigninFragmentToHomeFragment(loginType)
-        view?.let { Navigation.findNavController(it).navigate(action) }
+        if(loginType != 0){
+            val action = SigninFragmentDirections.actionSigninFragmentToHomeFragment(loginType)
+            view?.let { Navigation.findNavController(it).navigate(action) }
+        }
     }
 
     fun onLoginFacebookButtonclicked() {

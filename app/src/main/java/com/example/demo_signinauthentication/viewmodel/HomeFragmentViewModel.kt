@@ -3,6 +3,7 @@ package com.example.demo_signinauthentication.viewmodel
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.demo_signinauthentication.model.UserAuthenProfile
 import com.facebook.*
@@ -11,7 +12,11 @@ class HomeFragmentViewModel : ViewModel() {
 
 
     @SuppressLint("LongLogTag")
-    fun getFacebookUserProfile(token: AccessToken?, userId: String?, userAuthenProfile: UserAuthenProfile) {
+    fun getFacebookUserProfile(
+        token: AccessToken?,
+        userId: String?,
+        userAuthenProfile: UserAuthenProfile
+    ) {
         val parameters = Bundle()
         parameters.putString(
             "fields",
@@ -111,4 +116,5 @@ class HomeFragmentViewModel : ViewModel() {
                 Log.i("User profile: ", userAuthenProfile.toString())
             }).executeAsync()
     }
+
 }
