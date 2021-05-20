@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Demo_SigninAuthentication</string>
+    <string name="facebook_app_id">385744549387816</string>
+    <string name="fb_login_protocol_scheme">fb385744549387816</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.fragment.SigninFragment">
+    
+    <data>
+        <variable
+            name="handleSiginFrmEvent"
+            type="com.example.demo_signinauthentication.view.fragment.SigninFragment" />
+
+        <variable
+            name="viewmodel"
+            type="com.example.demo_signinauthentication.viewmodel.SigninFragmentViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnLoginFacebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rounded_corners"
+            android:drawableLeft="@drawable/ic_facebook"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
+            android:onClick="@{()-> handleSiginFrmEvent.onLoginFacebookButtonclicked()}"
+            android:text="Log in with Facebook"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+
+</layout>
