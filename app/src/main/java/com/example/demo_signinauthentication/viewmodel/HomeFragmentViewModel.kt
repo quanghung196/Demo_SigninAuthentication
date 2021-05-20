@@ -6,17 +6,29 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.demo_signinauthentication.model.UserAuthenProfile
+import com.example.demo_signinauthentication.view.fragment.SigninFragment.Companion.TYPE_FACEBOOK
 import com.facebook.*
 
 class HomeFragmentViewModel : ViewModel() {
 
+    var userProfile = MutableLiveData<UserAuthenProfile>()
+
+    fun getUserProfile(loginType: Int) {
+        if (loginType == TYPE_FACEBOOK) {
+            val accessToken = AccessToken.getCurrentAccessToken()
+            val userID = accessToken.userId
+            getFacebookUserProfile(accessToken, userID, userProfile)
+        }
+    }
 
     @SuppressLint("LongLogTag")
     fun getFacebookUserProfile(
         token: AccessToken?,
         userId: String?,
-        userAuthenProfile: UserAuthenProfile
-    ) {
+        userProfile: MutableLiveData<UserAuthenProfile>) {
+
+        var userAuthenProfile = UserAuthenProfile()
+
         val parameters = Bundle()
         parameters.putString(
             "fields",
@@ -114,7 +126,7 @@ class HomeFragmentViewModel : ViewModel() {
                     userAuthenProfile.userEmail = "Not exists"
                 }
                 Log.i("User profile: ", userAuthenProfile.toString())
+                userProfile.postValue(userAuthenProfile)
             }).executeAsync()
     }
-
 }

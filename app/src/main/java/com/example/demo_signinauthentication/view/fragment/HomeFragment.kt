@@ -1,17 +1,12 @@
 package com.example.demo_signinauthentication.view.fragment
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.demo_signinauthentication.R
 import com.example.demo_signinauthentication.databinding.FragmentHomeBinding
 import com.example.demo_signinauthentication.model.UserAuthenProfile
 import com.example.demo_signinauthentication.view.fragment.SigninFragment.Companion.TYPE_FACEBOOK
 import com.example.demo_signinauthentication.viewmodel.HomeFragmentViewModel
-import com.example.demo_signinauthentication.viewmodel.SigninFragmentViewModel
 import com.example.mvvm_retrofit_room.view.base.BaseFragment
 import com.facebook.AccessToken
 import kotlinx.coroutines.*
@@ -33,21 +28,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeFragmentViewModel>() 
         binding.handleHomeFrmEvent = this
         binding.userAuthenProfile = mUserAuthenProfile
 
-        if(loginType == TYPE_FACEBOOK){
-            getUserProfileTypeFacebook()
-        }
+        viewModel.getUserProfile(loginType!!)
+
+        viewModel.userProfile.observe(viewLifecycleOwner, Observer {
+            binding.userAuthenProfile = it
+        })
     }
 
-    private fun getUserProfileTypeFacebook() {
-        val accessToken = AccessToken.getCurrentAccessToken()
-        val userID = accessToken.userId
-
-        GlobalScope.launch {
-            viewModel.getFacebookUserProfile(accessToken, userID, mUserAuthenProfile)
-            delay(1000L)
-            withContext(Dispatchers.Main) {
-                binding.userAuthenProfile = mUserAuthenProfile
-            }
-        }
-    }
 }
